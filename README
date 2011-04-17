@@ -1,0 +1,41 @@
+sample-dht is a distributed hash table that consists of two components a client which users interact with and 1 or more nodeservers.
+
+The nodeservers are started up as follows:
+
+ python dhtnodeserver.py <port>
+ where port is the port number that you choose to run a nodeserver on.
+
+Any number of nodeserver instances can be started up on a host system.
+
+Clients can now persist and retrieve key value pairs to these nodes as they see fit on put the client retains a key node mapping enabling it to successfully
+track what node stores a given key without multiple hops.
+
+A client is instantiated with a list of one or more nodeservers that it interacts with. This can be expressed as follows in code:
+
+client = DHTClient([{"host": "localhost", "port": 2345}, {"host": "localhost", "port": 2346}])
+
+Once a client instance is retrieved users can now call put to persist and getKey to retrieve.
+
+The following shows a sample of how to persist a key value pair
+result = client.put("blahKey2","sample value 2")
+
+The following shows a sample of how to retrieve the value of a key
+result = client.getKey("blahKey2")
+
+
+A log file showing the operations of the client and nodeservers can be found at /tmp/dht.log
+
+
+To be production ready the following non-exhaustive list of items are required:
+
+- A suitable key distribution algorithm to ensure that nodes are not overloaded and to minimize traffic.
+- The nodeserver implementation should also implement some LRU caching mechanism to ensure that storage for kv pairs can be reclaimed after
+some pre-configured time.
+
+
+To build a distributable for your environment the following command can be run:
+
+python setup.py bdist
+ 
+
+This file was modified by PyCharm 1.2.1 for binding GitHub repository
